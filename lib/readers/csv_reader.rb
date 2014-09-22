@@ -11,7 +11,8 @@ module Readers
 
 		def read(file_path)
 			list = Common::Container::ContainerList.new
-			File.open(file_path, 'r').each_line do |line|
+      number_of_lines_to_jump = @configuration.header ? 1 : 0
+			File.open(file_path, 'r').drop(number_of_lines_to_jump).each_line do |line|
 				container = extract_info_from_line(line.chomp)
 				list << container
 			end

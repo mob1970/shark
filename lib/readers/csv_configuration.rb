@@ -9,7 +9,7 @@ module Readers
 			config = YAML.load_file(configuration_file)
 			@separator = config['separator']
 			@fields = config['fields']
-			@header = 'true'.upcase == (config['header'] ? config['header'] : '').upcase
+			@header = config['header']
 		end
 
 		def header?

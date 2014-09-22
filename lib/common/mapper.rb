@@ -21,9 +21,8 @@ module Common
 				end
       end
 
-      def map(source, automatic=false)
+      def map(source)
         target = Common::Container::Container.new(build_target_elements_list)
-        automatic_mapping() if automatic
         @mappings.each do |mapping|
           target.send("#{mapping.target}=", source.send(mapping.source))
         end

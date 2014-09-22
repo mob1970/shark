@@ -1,7 +1,7 @@
 require 'minitest/autorun'
 require './lib/readers/csv_configuration.rb'
 
-class TestCsvConfiguration < Minitest::Unit::TestCase
+class TestCsvConfigurationWithoutHeader < Minitest::Unit::TestCase
 	CONFIGURATION_FILE = 'test/readers/files/config/csv_reader_without_header.yml'
 
 	def setup()
@@ -13,7 +13,7 @@ class TestCsvConfiguration < Minitest::Unit::TestCase
 	end
 
 	def test_header
-		assert @conf.header?
+		assert !@conf.header?
 	end
 
 	def test_first_field
