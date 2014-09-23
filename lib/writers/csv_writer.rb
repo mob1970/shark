@@ -13,11 +13,11 @@ module Writers
       File.open(file_to_write, 'w') do |file|
         file.write(@configuration.fields.join(@configuration.separator) + "\n") if @configuration.header?
         content.each do |container|
-          content = []
+          record = []
           @configuration.fields.each do |field|
-            content << container.send(field)
+            record << container.send(field)
           end
-          file.write(content.join(@configuration.separator)+"\n")
+          file.write(record.join(@configuration.separator)+"\n")
         end
       end
     end
