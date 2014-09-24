@@ -38,7 +38,6 @@ module Readers
       fields = create_fields_array(@configuration)
       container = create_container(fields)
       @configuration.fields.each do |field|
-        #container.send("#{field.name}=", line[field.start-1, field.length].strip)
         container.send("#{field.name}=", safe_substring(line, field.start, field.length))
       end
 
