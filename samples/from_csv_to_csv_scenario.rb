@@ -1,4 +1,3 @@
-require './lib/common/environment'
 require './lib/scenarios/scenario.rb'
 require './lib/readers/csv_reader'
 require './lib/writers/csv_writer'
@@ -46,6 +45,5 @@ class FromCsvToCsvScenario < Scenarios::Scenario
 
 end
 
-Common::Environment::current = Common::Environment::DEVELOPMENT
 scenario = FromCsvToCsvScenario.new
 scenario.do_job

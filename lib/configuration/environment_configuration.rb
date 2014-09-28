@@ -2,14 +2,15 @@ require 'singleton'
 require 'yaml'
 
 require './lib/topologies/base/logical_technology.rb'
+require './lib/configuration/context'
 
 module Configuration
   class EnvironmentConfiguration
       include Singleton
 
     LOGICAL_TECHNOLOGIES = 'logical_technologies'
-    #CONFIGURATION_FILE = 'config/environment.yml'
-    CONFIGURATION_FILE = 'scripts/template_files/environment.yml'
+    DEFAULT_CONFIGURATION_FILE = 'config/environment.yml'
+    #CONFIGURATION_FILE = 'scripts/template_files/environment.yml'
 
     attr_reader :technologies
 
@@ -18,19 +19,24 @@ module Configuration
     end
 
     def self.context
-      @@context || 'development'
+      @@context
     end
 
     def self.context=(context)
       @@context ||= context
     end
 
+    def self.configuration_file=(configuration_file)
+      @@configuration_file = configuration_file
+    end
+
     private
 
     def initialize_technologies
-      config = YAML.load_file(CONFIGURATION_FILE)
-      @technologies = Hash.new
+      @@context = Configuration::Context::DEVELOPMENT if !@@context
 
+      @technologies = Hash.new
+      config = YAML.load_file(@@configuration_file || DEFAULT_CONFIGURATION_FILE)
       config[LOGICAL_TECHNOLOGIES].each do |technology|
         @technologies[technology['name']] = Topologies::LogicalTechnology.new(technology, @@context)
       end
@@ -38,6 +44,3 @@ module Configuration
   end
 end
 
-Configuration::EnvironmentConfiguration::context = 'production'
-conf = Configuration::EnvironmentConfiguration.instance
-p conf::context

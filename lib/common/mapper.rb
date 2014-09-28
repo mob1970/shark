@@ -3,7 +3,7 @@ require './lib/common/container'
 module Common
 	module Container
 		class Mapper
-			def initialize()
+			def initialize
 				@mappings = []
 			end
 
@@ -21,8 +21,10 @@ module Common
 				end
       end
 
+      #def map(source, automatic=false)
       def map(source)
         target = Common::Container::Container.new(build_target_elements_list)
+        #map_automatically(source, target) if automatic
         @mappings.each do |mapping|
           target.send("#{mapping.target}=", source.send(mapping.source))
         end
@@ -31,6 +33,12 @@ module Common
       end
 
       private
+
+      #def map_automatically(source, target)
+      #  source.fields.each do |field|
+      #    target.send("#{field}=", source.send(field)) if target.respond_to?("#{field}=")
+      #  end
+      #end
 
       def build_target_elements_list
         result = []

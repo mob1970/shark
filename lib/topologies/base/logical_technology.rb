@@ -21,7 +21,7 @@ module Topologies
     def build_structure(config, context)
       techs = config['physical_technologies']
       @name = config['name']
-      @physical_technologies = case config['type']
+      @physical_technology = case config['type']
                                  when Topologies::PhysicalTechnologyType::FILE
                                    Topologies::FileTechnology.new(techs[context])
                                  when Topologies::PhysicalTechnologyType::MYSQL

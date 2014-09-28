@@ -11,7 +11,7 @@ module Topologies
     end
 
     def reference
-
+      ''
     end
   end
 end

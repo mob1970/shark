@@ -1,7 +1,10 @@
 module Common
 	module Container
 		class Container
+      attr_reader :fields
+
 			def initialize(fields)
+        @fields = fields
 				fields.each do |field|
 					create_attr field
 				end
