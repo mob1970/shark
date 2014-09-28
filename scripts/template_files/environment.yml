@@ -1,0 +1,46 @@
+logical_technologies:
+  -
+   name: CUSTOMERS
+   type: File
+   physical_technologies:
+      development: /home/miquel/app/development
+      test: /home/miquel/app/test
+      production: /home/miquel/app/production
+  -
+   name: MYSQL_DATABASE
+   type: MySQL
+   physical_technologies:
+      development:
+        connection_string: //development_server:1521/development_db,
+        user: development_user,
+        password: development_user_password,
+        schema: development
+      test:
+        connection_string: //test_server:1521/test_db,
+        user: test_user,
+        password: test_user_password,
+        schema: test
+      production:
+        connection_string: //production_server:1521/production_db,
+        user: production_user,
+        password: production_user_password,
+        schema: production
+  -
+   name: ORACLE_DATABASE
+   type: Oracle
+   physical_technologies:
+      development:
+        connection_string: //development_server:1522/development_db,
+        user: development_user,
+        password: development_user_password,
+        schema: development
+      test:
+        connection_string: //test_server:1522/test_db,
+        user: test_user,
+        password: test_user_password,
+        schema: test
+      production:
+        connection_string: //production_server:1522/production_db,
+        user: production_user,
+        password: production_user_password,
+        schema: production

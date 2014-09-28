@@ -1,16 +1,17 @@
 module Scenarios
 	class BasicScenario
+
 		protected
 
-		def extract()
+		def extract
 			raise Exception.new 'Method extract not implemented yet.'
 		end
 
-		def transform()
+		def transform
 			raise Exception.new 'Method transform not implemented yet.'
 		end
 
-		def load()
+		def load
 			raise Exception.new 'Method load not implemented yet.'
 		end
 	end

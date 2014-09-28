@@ -1,3 +1,4 @@
+require './lib/common/environment'
 require './lib/scenarios/scenario.rb'
 require './lib/readers/csv_reader'
 require './lib/writers/csv_writer'
@@ -19,7 +20,7 @@ class FromCsvToCsvScenario < Scenarios::Scenario
   end
 
   def transform
-    mapper = mapper_building()
+    mapper = mapper_building
 
     @content = Common::Container::ContainerList.new
     @container_list.each do |container|
@@ -45,5 +46,6 @@ class FromCsvToCsvScenario < Scenarios::Scenario
 
 end
 
+Common::Environment::current = Common::Environment::DEVELOPMENT
 scenario = FromCsvToCsvScenario.new
-scenario.do_job()
+scenario.do_job
