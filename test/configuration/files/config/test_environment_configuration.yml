@@ -3,9 +3,12 @@ logical_technologies:
    name: CUSTOMERS
    type: File
    physical_technologies:
-      development: /app/data/development
-      test: /app/data/test
-      production: /app/data/production
+      development:
+        path: /app/data/development
+      test:
+        path: /app/data/test
+      production:
+        path: /app/data/production
   -
    name: MYSQL_DATABASE
    type: MySQL

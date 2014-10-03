@@ -5,13 +5,13 @@ module Topologies
   class FileTechnology < Topologies::PhysicalTechnology
     attr_reader :path
 
-    def initialize(path)
+    def initialize(context)
       super(Topologies::PhysicalTechnologyType::FILE)
-      @path = path
+      @path = context['path']
     end
 
     def reference
-      path
+      @path
     end
   end
 end

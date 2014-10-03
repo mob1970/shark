@@ -5,7 +5,8 @@ module Topologies
   class MySqlTechnology  < Topologies::SQLTechnology
 
     def initialize(context)
-      super(Topologies::PhysicalTechnologyType::MYSQL, context['connection_string'],
+      super(Topologies::PhysicalTechnologyType::MYSQL,
+            context['connection_string'],
             context['user'],
             context['password'])
     end

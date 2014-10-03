@@ -5,15 +5,15 @@ require './lib/common/container.rb'
 
 module Readers
 	class CsvReader < Readers::FileConfiguredReader
-		def initialize(configuration_file)
+		def initialize(configuration_file, technology)
 			@configuration = Readers::CsvConfiguration.new(configuration_file)
+      @technology = technology
 		end
 
 		def read(file_path)
 			list = Common::Container::ContainerList.new
-			File.open(file_path, 'r').drop(calculate_lines_to_jump).each do |line|
-				container = extract_info_from_line(line.chomp)
-				list << container
+			File.open(@technology.reference+file_path, 'r').drop(lines_to_jump).each do |line|
+        list << extract_info_from_line(line.chomp, create_container)
 			end
 
 			list
@@ -21,7 +21,7 @@ module Readers
 
 		private
 
-    def calculate_lines_to_jump
+    def lines_to_jump
       @configuration.header? ? 1 : 0
     end
 
@@ -29,8 +29,7 @@ module Readers
 			Common::Container::Container.new(@configuration.fields)
 		end
 
-		def extract_info_from_line(line)
-			container = create_container
+		def extract_info_from_line(line, container)
 			values = line.split(@configuration.separator)
 			raise Exception.new('Number of fields not equal number of values') if values.length != @configuration.fields.length
 			(0..@configuration.fields.length-1).each do |i| 

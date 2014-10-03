@@ -9,8 +9,8 @@ module Writers
 			@configuration = Writers::CsvConfiguration.new(configuration_file)
 	  end
 
-    def write(file_to_write, content)
-      File.open(file_to_write, 'w') do |file|
+    def write(file_path, content)
+      File.open(file_path, 'w') do |file|
         file.write(@configuration.fields.join(@configuration.separator) + "\n") if @configuration.header?
         content.each do |container|
           record = []
