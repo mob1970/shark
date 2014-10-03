@@ -1,25 +1,27 @@
 require './lib/scenarios/scenario.rb'
-require './lib/readers/delimited_reader'
-require './lib/writers/csv_writer'
+require './lib/handlers/delimited_handler'
+require './lib/handlers/csv_handler'
 require './lib/common/container'
 require './lib/common/container_list'
 require './lib/common/mapper'
 require './lib/common/mapping'
 
 class FromDelimitedToCsvScenario < Scenarios::Scenario
+  TECHNOLOGY_REFERENCE = './samples/files/data/'
+
   INPUT_CONFIG_FILE = './samples/files/config/delimited_reader.yml'
-  INPUT_FILE_PATH = './samples/files/data/information.txt'
+  INPUT_FILE_NAME = 'information.txt'
 
   OUTPUT_CONFIG_FILE = './samples/files/config/csv_writer.yml'
-  OUTPUT_FILE_PATH = './samples/files/data/output_information2.csv'
+  OUTPUT_FILE_NAME = 'output_information2.csv'
 
   def extract
-    reader = Readers::DelimitedReader.new(INPUT_CONFIG_FILE)
-    @container_list = reader.read(INPUT_FILE_PATH)
+    handler = Handlers::DelimitedHandler.new(INPUT_CONFIG_FILE)
+    @container_list = handler.read(INPUT_FILE_NAME)
   end
 
   def transform
-    mapper = mapper_building()
+    mapper = mapper_building
 
     @content = Common::Container::ContainerList.new
     @container_list.each do |container|
@@ -28,8 +30,10 @@ class FromDelimitedToCsvScenario < Scenarios::Scenario
   end
 
   def load
-    writer = Writers::CsvWriter.new(OUTPUT_CONFIG_FILE)
-    writer.write(OUTPUT_FILE_PATH, @content)
+    technology = MiniTest::Mock.new
+    technology.expect(:reference, TECHNOLOGY_REFERENCE)
+    handler = Handlers::CsvHandler.new(OUTPUT_CONFIG_FILE, technology)
+    handler.write(OUTPUT_FILE_NAME, @content)
   end
 
   private
@@ -45,4 +49,4 @@ class FromDelimitedToCsvScenario < Scenarios::Scenario
 end
 
 scenario = FromDelimitedToCsvScenario.new
-scenario.do_job()
+scenario.do_job

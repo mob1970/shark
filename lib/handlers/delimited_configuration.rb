@@ -1,6 +1,6 @@
 require 'yaml'
 
-module Readers
+module Handlers
   class DelimitedConfiguration
     attr_reader :fields
 
@@ -8,7 +8,7 @@ module Readers
       @fields =[]
       config = YAML.load_file(configuration_file)
       config['fields'].each do |item|
-        @fields << Readers::DelimitedConfigurationField.new(item)
+        @fields << Handlers::DelimitedConfigurationField.new(item)
       end
     end
   end

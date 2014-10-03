@@ -1,22 +1,36 @@
-require './lib/readers/base/file_configured_reader.rb'
-require './lib/readers/delimited_configuration.rb'
+require './lib/handlers/base/file_configured_handler.rb'
+require './lib/handlers/delimited_configuration.rb'
 require './lib/common/container_list.rb'
 require './lib/common/container.rb'
 
-module Readers
-  class DelimitedReader < Readers::FileConfiguredReader
-    def initialize(configuration_file)
-      @configuration = Readers::DelimitedConfiguration.new(configuration_file)
+module Handlers
+  class DelimitedHandler < Handlers::FileConfiguredHandler
+    def initialize(configuration_file, technology)
+      @configuration = Handlers::DelimitedConfiguration.new(configuration_file)
+      @technology = technology
     end
 
     def read(file_path)
       list = Common::Container::ContainerList.new
-      File.open(file_path, 'r').each_line do |line|
+      File.open(@technology.reference+file_path, 'r').each_line do |line|
         container = extract_info_from_line(line.chomp)
         list << container
       end
 
       list
+    end
+
+    def write(file_path, content)
+      File.open(@technology.reference+file_path, 'w') do |file|
+        content.each do |container|
+          record = ''
+          @configuration.fields.each do |field|
+            fill_record(record, field.start) unless right_start_position?(record, field.start)
+            record += container.send(field.name).ljust(field.length)
+          end
+          file.write(record+"\n")
+        end
+      end
     end
 
     private
@@ -53,6 +67,14 @@ module Readers
 
     def longer?(text, length)
       text && text.length > length
+    end
+
+    def right_start_position?(record, start_position)
+      record.length == start_position-1
+    end
+
+    def fill_record(record, total_length)
+      record.ljust(total_length-1)
     end
   end
 end

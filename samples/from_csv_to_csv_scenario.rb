@@ -1,21 +1,24 @@
 require './lib/scenarios/scenario.rb'
-require './lib/readers/csv_reader'
-require './lib/writers/csv_writer'
+require './lib/handlers/csv_handler'
 require './lib/common/container'
 require './lib/common/container_list'
 require './lib/common/mapper'
 require './lib/common/mapping'
 
 class FromCsvToCsvScenario < Scenarios::Scenario
-  INPUT_CONFIG_FILE = './samples/files/config/csv_reader_without_header.yml'
-  INPUT_FILE_PATH = './samples/files/data/information.csv'
+  TECHNOLOGY_REFERENCE = './samples/files/data/'
+
+  INPUT_CONFIG_FILE = './samples/files/config/csv_r_without_header.yml'
+  INPUT_FILE_PATH = 'information.csv'
 
   OUTPUT_CONFIG_FILE = './samples/files/config/csv_writer.yml'
-  OUTPUT_FILE_PATH = './samples/files/data/output_information.csv'
+  OUTPUT_FILE_PATH = 'output_information.csv'
 
   def extract
-    reader = Readers::CsvReader.new(INPUT_CONFIG_FILE)
-    @container_list = reader.read(INPUT_FILE_PATH)
+    technology = MiniTest::Mock.new
+    technology.expect(:reference, TECHNOLOGY_REFERENCE)
+    handler = Handlers::CsvHandler.new(INPUT_CONFIG_FILE, technology)
+    @container_list = handler.read(INPUT_FILE_PATH)
   end
 
   def transform
@@ -28,8 +31,10 @@ class FromCsvToCsvScenario < Scenarios::Scenario
   end
 
   def load
-    writer = Writers::CsvWriter.new(OUTPUT_CONFIG_FILE)
-    writer.write(OUTPUT_FILE_PATH, @content)
+    technology = MiniTest::Mock.new
+    technology.expect(:reference, TECHNOLOGY_REFERENCE)
+    handler = Handlers::CsvHandler.new(OUTPUT_CONFIG_FILE, technology)
+    handler.write(OUTPUT_FILE_PATH, @content)
   end
 
   private

@@ -1,12 +1,12 @@
-require './lib/readers/base/file_configured_reader.rb'
-require './lib/readers/csv_configuration.rb'
+require './lib/handlers/base/file_configured_handler.rb'
+require './lib/handlers/csv_configuration.rb'
 require './lib/common/container_list.rb'
 require './lib/common/container.rb'
 
-module Readers
-	class CsvReader < Readers::FileConfiguredReader
+module Handlers
+	class CsvHandler < Handlers::FileConfiguredHandler
 		def initialize(configuration_file, technology)
-			@configuration = Readers::CsvConfiguration.new(configuration_file)
+			@configuration = Handlers::CsvConfiguration.new(configuration_file)
       @technology = technology
 		end
 
@@ -17,7 +17,20 @@ module Readers
 			end
 
 			list
-		end
+    end
+
+    def write(file_path, content)
+      File.open(@technology.reference+file_path, 'w') do |file|
+        file.write(@configuration.fields.join(@configuration.separator) + "\n") if @configuration.header?
+        content.each do |container|
+          record = []
+          @configuration.fields.each do |field|
+            record << container.send(field)
+          end
+          file.write(record.join(@configuration.separator)+"\n")
+        end
+      end
+    end
 
 		private
 

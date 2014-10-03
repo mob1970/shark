@@ -1,4 +1,0 @@
-fields:
-  - {name: id, start: 1, length: 10}
-  - {name: first_name, start: 10, length: 50}
-  - {name: last_name, start: 61, length: 50}

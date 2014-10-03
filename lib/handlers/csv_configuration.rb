@@ -1,6 +1,6 @@
 require 'yaml'
 
-module Readers
+module Handlers
 	class CsvConfiguration
 		attr_accessor :separator, :fields
 		attr_writer :header

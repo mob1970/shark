@@ -1,11 +1,11 @@
 require 'minitest/autorun'
-require './lib/readers/csv_configuration.rb'
+require './lib/handlers/csv_configuration.rb'
 
 class TestCsvConfigurationWithoutHeader < Minitest::Unit::TestCase
-	CONFIGURATION_FILE = 'test/readers/files/config/csv_reader_without_header.yml'
+	CONFIGURATION_FILE = 'test/handlers/files/config/csv_handler_without_header.yml'
 
 	def setup()
-		@conf = Readers::CsvConfiguration.new(CONFIGURATION_FILE)
+		@conf = Handlers::CsvConfiguration.new(CONFIGURATION_FILE)
 	end
 
 	def test_csv_separator

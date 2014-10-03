@@ -1,11 +1,11 @@
 require 'minitest/autorun'
-require './lib/readers/delimited_configuration'
+require './lib/handlers/delimited_configuration'
 
 class TestDelimitedConfiguration < MiniTest::Unit::TestCase
-  CONFIGURATION_FILE = 'test/readers/files/config/delimited_reader.yml'
+  CONFIGURATION_FILE = 'test/handlers/files/config/delimited_handler.yml'
 
   def setup
-    @conf = Readers::DelimitedConfiguration.new(CONFIGURATION_FILE)
+    @conf = Handlers::DelimitedConfiguration.new(CONFIGURATION_FILE)
   end
 
   def test_first_field_name
