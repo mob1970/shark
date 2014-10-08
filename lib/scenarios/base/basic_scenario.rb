@@ -1,5 +1,12 @@
+require './lib/configuration/context'
+require './lib/configuration/environment_configuration'
+
 module Scenarios
 	class BasicScenario
+
+    def initialize(context=Configuration::Context::DEVELOPMENT)
+      Configuration::EnvironmentConfiguration::context = context
+    end
 
 		protected
 

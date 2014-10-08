@@ -9,7 +9,7 @@ module Topologies
     attr_reader :name, :physical_technology
 
     def initialize(config, context)
-      build_structure(config,context)
+      build_structure(config, Configuration::Context.string_representation(context))
     end
 
     def reference

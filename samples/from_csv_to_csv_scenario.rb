@@ -4,19 +4,20 @@ require './lib/common/container'
 require './lib/common/container_list'
 require './lib/common/mapper'
 require './lib/common/mapping'
+require './lib/configuration/context'
+require './lib/configuration/environment_configuration'
 
 class FromCsvToCsvScenario < Scenarios::Scenario
   TECHNOLOGY_REFERENCE = './samples/files/data/'
 
-  INPUT_CONFIG_FILE = './samples/files/config/csv_r_without_header.yml'
-  INPUT_FILE_PATH = 'information.csv'
+  INPUT_CONFIG_FILE = 'config/input_csv_handler_without_header.yml'
+  INPUT_FILE_PATH = 'data/information.csv'
 
-  OUTPUT_CONFIG_FILE = './samples/files/config/csv_writer.yml'
-  OUTPUT_FILE_PATH = 'output_information.csv'
+  OUTPUT_CONFIG_FILE = 'config/output_csv_handler_with_header.yml'
+  OUTPUT_FILE_PATH = 'data/output_information.csv'
 
   def extract
-    technology = MiniTest::Mock.new
-    technology.expect(:reference, TECHNOLOGY_REFERENCE)
+    technology = Configuration::EnvironmentConfiguration.instance.technologies['SAMPLES_PATH']
     handler = Handlers::CsvHandler.new(INPUT_CONFIG_FILE, technology)
     @container_list = handler.read(INPUT_FILE_PATH)
   end
@@ -31,8 +32,7 @@ class FromCsvToCsvScenario < Scenarios::Scenario
   end
 
   def load
-    technology = MiniTest::Mock.new
-    technology.expect(:reference, TECHNOLOGY_REFERENCE)
+    technology = Configuration::EnvironmentConfiguration.instance.technologies['SAMPLES_PATH']
     handler = Handlers::CsvHandler.new(OUTPUT_CONFIG_FILE, technology)
     handler.write(OUTPUT_FILE_PATH, @content)
   end
@@ -50,5 +50,6 @@ class FromCsvToCsvScenario < Scenarios::Scenario
 
 end
 
-scenario = FromCsvToCsvScenario.new
+Configuration::EnvironmentConfiguration.configuration_file = './samples/files/config/test_environment_configuration.yml'
+scenario = FromCsvToCsvScenario.new(Configuration::Context::PRODUCTION)
 scenario.do_job

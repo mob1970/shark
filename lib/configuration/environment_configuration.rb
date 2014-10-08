@@ -33,7 +33,7 @@ module Configuration
     private
 
     def initialize_technologies
-      @@context = Configuration::Context::DEVELOPMENT if !@@context
+      @@context = Configuration::Context::DEVELOPMENT unless @@context
 
       @technologies = Hash.new
       config = YAML.load_file(@@configuration_file || DEFAULT_CONFIGURATION_FILE)

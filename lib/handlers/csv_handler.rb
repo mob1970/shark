@@ -6,7 +6,7 @@ require './lib/common/container.rb'
 module Handlers
 	class CsvHandler < Handlers::FileConfiguredHandler
 		def initialize(configuration_file, technology)
-			@configuration = Handlers::CsvConfiguration.new(configuration_file)
+			@configuration = Handlers::CsvConfiguration.new(technology.reference+configuration_file)
       @technology = technology
 		end
 

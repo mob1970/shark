@@ -1,0 +1,11 @@
+logical_technologies:
+  -
+   name: SAMPLES_PATH
+   type: File
+   physical_technologies:
+      development:
+        path: samples/files/
+      test:
+        path: samples/files/
+      production:
+        path: samples/files/
