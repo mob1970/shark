@@ -1,4 +1,4 @@
-require './lib/scenarios/scenario.rb'
+require './lib/scenarios/scenario'
 require './lib/handlers/csv_handler'
 require './lib/common/container'
 require './lib/common/container_list'

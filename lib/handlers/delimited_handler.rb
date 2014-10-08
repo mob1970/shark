@@ -6,7 +6,7 @@ require './lib/common/container.rb'
 module Handlers
   class DelimitedHandler < Handlers::FileConfiguredHandler
     def initialize(configuration_file, technology)
-      @configuration = Handlers::DelimitedConfiguration.new(configuration_file)
+      @configuration = Handlers::DelimitedConfiguration.new(technology.reference+configuration_file)
       @technology = technology
     end
 

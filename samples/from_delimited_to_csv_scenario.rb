@@ -1,22 +1,25 @@
-require './lib/scenarios/scenario.rb'
+require './lib/scenarios/scenario'
 require './lib/handlers/delimited_handler'
 require './lib/handlers/csv_handler'
 require './lib/common/container'
 require './lib/common/container_list'
 require './lib/common/mapper'
 require './lib/common/mapping'
+require './lib/configuration/context'
+require './lib/configuration/environment_configuration'
 
 class FromDelimitedToCsvScenario < Scenarios::Scenario
   TECHNOLOGY_REFERENCE = './samples/files/data/'
 
-  INPUT_CONFIG_FILE = './samples/files/config/delimited_reader.yml'
-  INPUT_FILE_NAME = 'information.txt'
+  INPUT_CONFIG_FILE = 'config/input_delimited_handler.yml'
+  INPUT_FILE_NAME = 'data/information.txt'
 
-  OUTPUT_CONFIG_FILE = './samples/files/config/csv_writer.yml'
-  OUTPUT_FILE_NAME = 'output_information2.csv'
+  OUTPUT_CONFIG_FILE = 'config/output_csv_handler_with_header.yml'
+  OUTPUT_FILE_NAME = 'data/output_information2.csv'
 
   def extract
-    handler = Handlers::DelimitedHandler.new(INPUT_CONFIG_FILE)
+    technology = Configuration::EnvironmentConfiguration.instance.technologies['SAMPLES_PATH']
+    handler = Handlers::DelimitedHandler.new(INPUT_CONFIG_FILE, technology)
     @container_list = handler.read(INPUT_FILE_NAME)
   end
 
@@ -30,8 +33,7 @@ class FromDelimitedToCsvScenario < Scenarios::Scenario
   end
 
   def load
-    technology = MiniTest::Mock.new
-    technology.expect(:reference, TECHNOLOGY_REFERENCE)
+    technology = Configuration::EnvironmentConfiguration.instance.technologies['SAMPLES_PATH']
     handler = Handlers::CsvHandler.new(OUTPUT_CONFIG_FILE, technology)
     handler.write(OUTPUT_FILE_NAME, @content)
   end
@@ -48,5 +50,6 @@ class FromDelimitedToCsvScenario < Scenarios::Scenario
   end
 end
 
-scenario = FromDelimitedToCsvScenario.new
+Configuration::EnvironmentConfiguration.configuration_file = './samples/files/config/test_environment_configuration.yml'
+scenario = FromDelimitedToCsvScenario.new(Configuration::Context::PRODUCTION)
 scenario.do_job
