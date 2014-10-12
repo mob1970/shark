@@ -9,18 +9,18 @@ class TestEnvironmentConfiguration < Minitest::Unit::TestCase
   PRODUCTION_FILE_PATH = '/app/data/production'
 
   def setup
-    Configuration::EnvironmentConfiguration.context = PRODUCTION_CONTEXT
+    Configuration::EnvironmentConfiguration.context = Configuration::Context::PRODUCTION
     Configuration::EnvironmentConfiguration.configuration_file = CONFIGURATION_FILE
     @configuration = Configuration::EnvironmentConfiguration.instance
   end
 
   def test_context_production
-    assert_equal PRODUCTION_CONTEXT, Configuration::EnvironmentConfiguration.context
+    assert_equal Configuration::Context::PRODUCTION, Configuration::EnvironmentConfiguration.context
   end
 
   def test_context_still_production
-    Configuration::EnvironmentConfiguration.context = DEVELOPMENT_CONTEXT
-    assert_equal PRODUCTION_CONTEXT, Configuration::EnvironmentConfiguration.context
+    Configuration::EnvironmentConfiguration.context = Configuration::Context::DEVELOPMENT
+    assert_equal Configuration::Context::PRODUCTION, Configuration::EnvironmentConfiguration.context
   end
 
   def test_customers_reference

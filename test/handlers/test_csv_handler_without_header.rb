@@ -2,13 +2,14 @@ require 'minitest/autorun'
 require './lib/handlers/csv_handler.rb'
 
 class TestCsvHandlerWithoutHeader < Minitest::Unit::TestCase
-  TECHNOLOGY_REFERENCE = 'test/handlers/files/data/'
+  TECHNOLOGY_REFERENCE = 'test/handlers/files/'
 
-	CONFIGURATION_FILE = 'test/handlers/files/config/csv_handler_without_header.yml'
-	DATA_FILE = 'csv_handler_without_header.csv'
+	CONFIGURATION_FILE = 'config/csv_handler_without_header.yml'
+	DATA_FILE = 'data/csv_handler_without_header.csv'
 
 	def setup
     technology = MiniTest::Mock.new
+    technology.expect(:reference, TECHNOLOGY_REFERENCE)
     technology.expect(:reference, TECHNOLOGY_REFERENCE)
 		csv_handler = Handlers::CsvHandler.new(CONFIGURATION_FILE, technology)
 		@information = csv_handler.read(DATA_FILE)

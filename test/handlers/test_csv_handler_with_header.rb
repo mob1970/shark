@@ -2,13 +2,13 @@ require 'minitest/autorun'
 require './lib/handlers/csv_handler.rb'
 
 class TestCsvHandlerWithHeader < Minitest::Unit::TestCase
-  TECHNOLOGY_REFERENCE = 'test/handlers/files/data/'
+  TECHNOLOGY_REFERENCE = 'test/handlers/files/'
 
-  CONFIGURATION_FILE = 'test/handlers/files/config/csv_handler_with_header.yml'
-  EXPECTED_DATA_FILENAME = 'test/handlers/files/data/expected_csv_handler.csv'
+  CONFIGURATION_FILE = 'config/csv_handler_with_header.yml'
+  EXPECTED_DATA_FILENAME = 'data/expected_csv_handler.csv'
 
-  DATA_FILENAME = 'csv_handler_with_header.csv'
-  OUTPUT_DATA_FILENAME = 'output_csv_handler_with_header.csv'
+  INPUT_DATA_FILENAME = 'data/csv_handler_with_header.csv'
+  OUTPUT_DATA_FILENAME = 'data/output_csv_handler_with_header.csv'
 
   FIELDS = %w(id first_name last_name)
 
@@ -20,8 +20,9 @@ class TestCsvHandlerWithHeader < Minitest::Unit::TestCase
   def setup
     technology = MiniTest::Mock.new
     technology.expect(:reference, TECHNOLOGY_REFERENCE)
+    technology.expect(:reference, TECHNOLOGY_REFERENCE)
     csv_handler = Handlers::CsvHandler.new(CONFIGURATION_FILE, technology)
-    @information = csv_handler.read(DATA_FILENAME)
+    @information = csv_handler.read(INPUT_DATA_FILENAME)
   end
 
   def test_first_element_id
@@ -49,10 +50,11 @@ class TestCsvHandlerWithHeader < Minitest::Unit::TestCase
 
     technology = MiniTest::Mock.new
     technology.expect(:reference, TECHNOLOGY_REFERENCE)
+    technology.expect(:reference, TECHNOLOGY_REFERENCE)
     csv_handler = Handlers::CsvHandler.new(CONFIGURATION_FILE, technology)
     csv_handler.write(OUTPUT_DATA_FILENAME, container_list)
 
-    assert_equal File.read(EXPECTED_DATA_FILENAME), File.read(TECHNOLOGY_REFERENCE+OUTPUT_DATA_FILENAME)
+    assert_equal File.read(TECHNOLOGY_REFERENCE+EXPECTED_DATA_FILENAME), File.read(TECHNOLOGY_REFERENCE+OUTPUT_DATA_FILENAME)
   end
 
   private

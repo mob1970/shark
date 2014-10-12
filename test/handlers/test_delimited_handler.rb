@@ -1,14 +1,15 @@
 require 'minitest/autorun'
+require 'minitest/mock'
 require './lib/handlers/delimited_handler.rb'
 
 class TestDelimitedHandler < Minitest::Unit::TestCase
-  TECHNOLOGY_REFERENCE = 'test/handlers/files/data/'
+  TECHNOLOGY_REFERENCE = 'test/handlers/files/'
 
-  CONFIGURATION_FILE = 'test/handlers/files/config/delimited_handler.yml'
-  DATA_FILE = 'delimited_handler.txt'
+  CONFIGURATION_FILE = 'config/delimited_handler.yml'
+  DATA_FILE = 'data/delimited_handler.txt'
 
-  EXPECTED_DATA_FILENAME = 'expected_delimited_writer.txt'
-  OUTPUT_DATA_FILENAME = 'delimited_writer.txt'
+  EXPECTED_DATA_FILENAME = 'data/expected_delimited_writer.txt'
+  OUTPUT_DATA_FILENAME = 'data/delimited_writer.txt'
 
   FIELDS = %w(id first_name last_name)
 
@@ -19,6 +20,7 @@ class TestDelimitedHandler < Minitest::Unit::TestCase
 
   def setup
     technology = MiniTest::Mock.new
+    technology.expect(:reference, TECHNOLOGY_REFERENCE)
     technology.expect(:reference, TECHNOLOGY_REFERENCE)
     delimited_handler = Handlers::DelimitedHandler.new(CONFIGURATION_FILE, technology)
     @information = delimited_handler.read(DATA_FILE)
@@ -56,6 +58,7 @@ class TestDelimitedHandler < Minitest::Unit::TestCase
     container_list << create_container(FIELDS, FOURTH_RECORD)
 
     technology = MiniTest::Mock.new
+    technology.expect(:reference, TECHNOLOGY_REFERENCE)
     technology.expect(:reference, TECHNOLOGY_REFERENCE)
     delimited_handler = Handlers::DelimitedHandler.new(CONFIGURATION_FILE, technology)
     delimited_handler.write(OUTPUT_DATA_FILENAME, container_list)
