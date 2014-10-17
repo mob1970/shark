@@ -5,6 +5,8 @@ require './lib/handlers/sql/my_sql_handler'
 require './lib/handlers/delimited_handler'
 require './lib/handlers/sql/base/filter'
 require './lib/handlers/sql/base/evaluator'
+require './lib/common/mapper'
+require './lib/common/mapping'
 
 class FromDelimitedToMySQL_scenario < Scenarios::Scenario
 
@@ -20,6 +22,12 @@ class FromDelimitedToMySQL_scenario < Scenarios::Scenario
   end
 
   def transform
+    mapper = mapper_building
+
+    @content = Common::Container::ContainerList.new
+    @container_list.each do |container|
+      @content << mapper.map(container)
+    end
   end
 
   def load
@@ -27,6 +35,17 @@ class FromDelimitedToMySQL_scenario < Scenarios::Scenario
     @container_list.each do |container|
       handler.insert('users', container)
     end
+  end
+
+  private
+
+  def mapper_building
+    result = Common::Container::Mapper.new
+    result << Common::Container::Mapping.new('id', 'id')
+    result << Common::Container::Mapping.new('first_name', 'first_name')
+    result << Common::Container::Mapping.new('last_name', 'last_name')
+
+    result
   end
 end
 
