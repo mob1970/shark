@@ -1,10 +1,10 @@
-require './lib/handlers/base/file_configured_handler.rb'
+require './lib/handlers/base/file_handler.rb'
 require './lib/handlers/delimited_configuration.rb'
 require './lib/common/container_list.rb'
 require './lib/common/container.rb'
 
 module Handlers
-  class DelimitedHandler < Handlers::FileConfiguredHandler
+  class DelimitedHandler < Handlers::FileHandler
     def initialize(configuration_file, technology)
       @configuration = Handlers::DelimitedConfiguration.new(technology.reference+configuration_file)
       @technology = technology

@@ -1,10 +1,11 @@
-require './lib/handlers/base/file_configured_handler.rb'
+require './lib/handlers/base/file_handler.rb'
 require './lib/handlers/csv_configuration.rb'
 require './lib/common/container_list.rb'
 require './lib/common/container.rb'
 
 module Handlers
-	class CsvHandler < Handlers::FileConfiguredHandler
+	class CsvHandler < Handlers::FileHandler
+
 		def initialize(configuration_file, technology)
 			@configuration = Handlers::CsvConfiguration.new(technology.reference+configuration_file)
       @technology = technology

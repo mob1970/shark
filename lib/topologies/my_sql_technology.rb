@@ -1,14 +1,15 @@
-require './lib/topologies/sql_technology'
+require './lib/topologies/server_sql_technology'
 require './lib/topologies/base/physical_technology_type'
 
 module Topologies
-  class MySqlTechnology  < Topologies::SQLTechnology
-
+  class MySqlTechnology  < Topologies::ServerSQLTechnology
     def initialize(context)
       super(Topologies::PhysicalTechnologyType::MYSQL,
-            context['connection_string'],
+            context['host'],
+            context['port'],
             context['user'],
-            context['password'])
+            context['password'],
+            context['database'])
     end
 
     def reference

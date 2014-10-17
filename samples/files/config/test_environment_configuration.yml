@@ -9,3 +9,25 @@ logical_technologies:
         path: samples/files/
       production:
         path: samples/files/
+  -
+   name: MYSQL_DATABASE
+   type: MySQL
+   physical_technologies:
+      development:
+        host: 127.0.0.1
+        port: 3306
+        user: miquel
+        password: supct2335
+        database: shark_tests
+      test:
+        host: 127.0.0.1
+        port: 3306
+        user: miquel
+        password: supct2335
+        database: shark_tests
+      production:
+        host: 127.0.0.1
+        port: 3306
+        user: miquel
+        password: supct2335
+        database: shark_tests

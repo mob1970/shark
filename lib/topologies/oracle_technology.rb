@@ -1,14 +1,17 @@
-require './lib/topologies/sql_technology'
+require './lib/topologies/server_sql_technology'
 require './lib/topologies/base/physical_technology_type'
 
 module Topologies
-  class OracleTechnology < Topologies::SQLTechnology
+  class OracleTechnology < Topologies::ServerSQLTechnology
     attr_reader :schema
 
     def initialize(context)
-      super(Topologies::PhysicalTechnologyType::ORACLE, context['connection_string'],
-                                      context['user'],
-                                      context['password'])
+      super(Topologies::PhysicalTechnologyType::ORACLE,
+            context['host'],
+            context['port'],
+            context['user'],
+            context['password'],
+            context['database'])
       @schema = context['schema']
     end
 

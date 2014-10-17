@@ -1,7 +1,7 @@
 module Common
 	module Container
 		class ContainerList
-			def initialize()
+			def initialize
 				@elements = []
 			end
 
