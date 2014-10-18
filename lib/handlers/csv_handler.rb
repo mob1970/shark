@@ -6,8 +6,8 @@ require './lib/common/container.rb'
 module Handlers
 	class CsvHandler < Handlers::FileHandler
 
-		def initialize(configuration_file, technology)
-			@configuration = Handlers::CsvConfiguration.new(technology.reference+configuration_file)
+		def initialize(configuration, technology)
+			@configuration = extract_configuration(configuration, technology)
       @technology = technology
 		end
 
@@ -34,6 +34,11 @@ module Handlers
     end
 
 		private
+
+    def extract_configuration(configuration, technology)
+      (configuration.is_a?(Handlers::CsvConfiguration)) ? configuration
+                                                        : Handlers::CsvConfiguration.new(technology.reference+configuration)
+    end
 
     def lines_to_jump
       @configuration.header? ? 1 : 0

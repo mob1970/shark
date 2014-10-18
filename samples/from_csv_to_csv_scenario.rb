@@ -1,5 +1,6 @@
 require './lib/scenarios/scenario'
 require './lib/handlers/csv_handler'
+require './lib/handlers/csv_configuration'
 require './lib/common/container'
 require './lib/common/container_list'
 require './lib/common/mapper'
@@ -33,11 +34,19 @@ class FromCsvToCsvScenario < Scenarios::Scenario
 
   def load
     technology = Configuration::EnvironmentConfiguration.instance.technologies['SAMPLES_PATH']
-    handler = Handlers::CsvHandler.new(OUTPUT_CONFIG_FILE, technology)
+    output_csv_configuration = build_output_csv_configuration
+
+    handler = Handlers::CsvHandler.new(output_csv_configuration, technology)
     handler.write(OUTPUT_FILE_PATH, @content)
   end
 
   private
+
+  def build_output_csv_configuration
+    Handlers::CsvConfiguration.new(:separator => ';',
+                                   :fields => %W(identifier firstname lastname),
+                                   :header => true)
+  end
 
   def mapper_building
     result = Common::Container::Mapper.new
