@@ -2,6 +2,12 @@ require './lib/handlers/base/handler'
 
 module Handlers
   class SQLHandler < Handlers::Handler
+    attr_reader :technology
+
+    def initialize(technology)
+      @technology = technology
+    end
+
     def read(table, filters)
       raise Exception.new 'Method read not implemented yet'
     end

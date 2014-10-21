@@ -8,11 +8,7 @@ require './lib/common/container.rb'
 require 'mysql2'
 
 module Handlers
-  class MySQLHandler< Handlers::SQLHandler
-    def initialize(technology)
-      @technology = technology
-    end
-
+  class MySQLHandler < Handlers::SQLHandler
     def read(table, filters=[])
       begin
         client = create_client
@@ -31,7 +27,7 @@ module Handlers
     def insert(table, content)
       begin
         client = create_client
-        columns, values = extract_columns_and_values(client, content)
+        columns, values = extract_columns_and_values(content)
         sql_sentence = build_insert_sentence(table, columns,values)
         client.query(sql_sentence)
       ensure
@@ -57,7 +53,7 @@ module Handlers
       client.close if client
     end
 
-    def build_query(table, filters)
+    def build_query(table, filters=[])
       sentence = "SELECT * FROM `#{table}` WHERE 1=1 "
       filters.each do |filter|
         sentence += "AND #{filter.column} #{filter.evaluator} #{filter.value}"
@@ -85,7 +81,7 @@ module Handlers
       Common::Container::Container.new(fields)
     end
 
-    def extract_columns_and_values(client, content)
+    def extract_columns_and_values(content)
       columns = []
       values = []
       content.fields.each do |field|

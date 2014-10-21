@@ -31,3 +31,13 @@ logical_technologies:
         user: miquel
         password: supct2335
         database: shark_tests
+  -
+   name: SQLITE3_PATH
+   type: SQLite3
+   physical_technologies:
+      development:
+        file: samples/files/data/test.db
+      test:
+        file: samples/files/data/test.db
+      production:
+        file: samples/files/data/test.db

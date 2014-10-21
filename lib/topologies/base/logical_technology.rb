@@ -3,6 +3,7 @@ require './lib/topologies/base/physical_technology_type'
 require './lib/topologies/file_technology'
 require './lib/topologies/my_sql_technology'
 require './lib/topologies/oracle_technology'
+require './lib/topologies/sqlite3_technology'
 
 module Topologies
   class LogicalTechnology
@@ -28,6 +29,8 @@ module Topologies
                                    Topologies::MySqlTechnology.new(techs[context])
                                  when Topologies::PhysicalTechnologyType::ORACLE
                                    Topologies::OracleTechnology.new(techs[context])
+                               when Topologies::PhysicalTechnologyType::SQLITE3
+                                 Topologies::Sqlite3Technology.new(techs[context])
                                  else
                                    raise Exception.new("Type #{config['type']} is not a valid type.")
                                end
