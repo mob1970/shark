@@ -41,3 +41,28 @@ logical_technologies:
         file: samples/files/data/test.db
       production:
         file: samples/files/data/test.db
+  -
+   name: ORACLE_DATABASE
+   type: Oracle
+   physical_technologies:
+      development:
+        host: //development_server,
+        port: 1234,
+        database: db_development,
+        user: development_user,
+        password: development_user_password,
+        schema: development
+      test:
+        host: //test_server,
+        port: 1234,
+        database: db_test,
+        user: test_user,
+        password: test_user_password,
+        schema: test
+      production:
+        host: //production_server,
+        port: 1234,
+        database: db_production,
+        user: production_user,
+        password: production_user_password,
+        schema: production

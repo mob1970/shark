@@ -8,7 +8,7 @@ module Handlers
       @technology = technology
     end
 
-    def read(table, filters)
+    def read_each(table, filters)
       raise Exception.new 'Method read not implemented yet'
     end
 
@@ -22,6 +22,32 @@ module Handlers
 
     def delete(sql_sentence)
       raise Exception.new 'Method delete not implemented yet'
+    end
+
+    def read(table, filters=[])
+      list = Common::Container::ContainerList.new
+      read_each(table, filters) do |container|
+        list << container
+      end
+
+      list
+    end
+
+    protected
+
+    def extract_columns_and_values(content)
+      columns = []
+      values = []
+      content.fields.each do |field|
+        columns << field
+        values << "#{content.send(field)}"
+      end
+
+      [columns, values]
+    end
+
+    def create_container(fields)
+      Common::Container::Container.new(fields)
     end
   end
 end

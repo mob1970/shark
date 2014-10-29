@@ -10,19 +10,17 @@ require 'sqlite3'
 
 module Handlers
   class Sqlite3Handler < Handlers::SQLHandler
-    def read(table, filters=[])
+    def read_each(table, filters=[])
       begin
         database = open_database
         sql_sentence = build_query(table, filters)
         results = database.execute(sql_sentence, obtain_filter_values(filters))
-        data = format_results(results)
-      rescue Exception => e
-        data = Common::Container::ContainerList.new
+        results.each do |row|
+          yield format_result(row)
+        end
       ensure
         close_database(database)
       end
-
-      data
     end
 
     def insert(table, content)
@@ -64,17 +62,6 @@ module Handlers
       sentence
     end
 
-    def extract_columns_and_values(content)
-      columns = []
-      values = []
-      content.fields.each do |field|
-        columns << field
-        values << "#{content.send(field)}"
-      end
-
-      [columns, values]
-    end
-
     def build_insert_sentence(table, columns)
       "INSERT INTO #{table} (#{columns.join(', ')}) " +
       "VALUES (#{Array.new(columns.length, '?').join(', ')})"
@@ -82,7 +69,6 @@ module Handlers
 
     def obtain_filter_values(filters)
       values = []
-
       filters.each do |filter|
         values << filter.value
       end
@@ -90,23 +76,14 @@ module Handlers
       values
     end
 
-    def create_container(fields)
-      Common::Container::Container.new(fields)
-    end
-
-    def format_results(results)
-      list = Common::Container::ContainerList.new
-
-      results.each do |row|
-        columns = obtain_columns(row)
-        container = create_container(columns)
-        columns.each do |column|
-          container.send("#{column}=", row[column].to_s)
-        end
-        list << container
+    def format_result(row)
+      columns = obtain_columns(row)
+      container = create_container(columns)
+      columns.each do |column|
+        container.send("#{column}=", row[column].to_s)
       end
 
-      list
+      container
     end
 
     def obtain_columns(row)
