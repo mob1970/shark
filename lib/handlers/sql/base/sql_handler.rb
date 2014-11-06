@@ -1,4 +1,5 @@
 require './lib/handlers/base/handler'
+require './lib/common/container_list'
 
 module Handlers
   class SQLHandler < Handlers::Handler
@@ -44,10 +45,6 @@ module Handlers
       end
 
       [columns, values]
-    end
-
-    def create_container(fields)
-      Common::Container::Container.new(fields)
     end
   end
 end

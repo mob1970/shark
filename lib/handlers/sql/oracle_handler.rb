@@ -29,10 +29,14 @@ module Handlers
       begin
         connection = create_connection
         sql_sentence = build_query(table, filters)
-        columns, values = extract_columns_and_values(content)
-        results = connection.exec(sql_sentence,values)
-        results.each do |row|
-          yield format_result(row, columns)
+        values = extract_values(filters)
+        #results = connection.exec(sql_sentence, values)
+        cursor = connection.parse(sql_sentence)
+        cursor.exec
+        column_names = extract_column_names(cursor.column_metadata)
+
+        cursor.fetch do |row|
+          yield format_result(row, column_names)
         end
       ensure
         close_connection(connection)
@@ -59,7 +63,7 @@ module Handlers
     private
 
     def create_connection
-      connection_url = "//#{@technology.physical_technology.host}:#{@technology.physical_technology.port}" +
+      connection_url = "//#{@technology.physical_technology.host}:#{@technology.physical_technology.port.to_s}" +
                        "/#{@technology.physical_technology.database}"
       OCI8.new(@technology.physical_technology.user,
                @technology.physical_technology.password,
@@ -80,6 +84,26 @@ module Handlers
       end
 
       sentence
+    end
+
+    def extract_column_names(metadata)
+      names= []
+
+      metadata.each do |column|
+        names << column.name.downcase
+      end
+
+      names
+    end
+
+    def extract_values(filters)
+      values = []
+
+      filters.each do |filter|
+        values << filter.value
+      end
+
+      (values && values.length != 0) ? values : nil
     end
 
     def format_result(result, fields)
@@ -104,6 +128,3 @@ module Handlers
     end
   end
 end
-
-
-oh = Handlers::OracleHandler.new()
